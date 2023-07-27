@@ -1,27 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject ballPrefabs;
-    private IObjectPool<Ball> pool;
+    public static IObjectPool<Ball> ballPool;
+
+    public GameObject[] stages;
+    public int[] stageInInteraction;
+    //현재 스테이지 체크
+    //현재 스테이지의 상호작용 리스트 생성
 
     private void Awake()
     {
-        pool = new ObjectPool<Ball>(CreateBall,OnGetBall,OnReleaseBall,OnDestroyBall,maxSize:2000);
+        ballPool = new ObjectPool<Ball>(CreateBall,OnGetBall,OnReleaseBall,OnDestroyBall,maxSize:2000);
+    }
+
+    private void Start()
+    {
+        stageInInteraction = new int[stages.Length];
+        int stageNum = 0;
+        foreach (var stage in stages)
+        {
+            int count = 0;
+            int numChildren = stage.transform.childCount;
+
+            for (int i = 0; i < numChildren; i++)
+            {
+                var child = stage.transform.GetChild(i);
+                if (child.CompareTag("InteractionBlock"))
+                {
+                    child.GetComponent<InteractionBlock>().count = count;
+                    count++;
+                }
+            }
+            stageInInteraction[stageNum] = count;
+            stageNum++;
+        }
     }
 
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            var ball = ballPool.Get();
+            ball.transform.position = Vector3.zero;
+        }
     }
 
     private Ball CreateBall()
     {
         Ball ball = Instantiate(ballPrefabs).GetComponent<Ball>();
-        ball.SetBalls(pool);
+        ball.SetBalls(ballPool);
         return ball; 
     }
 
