@@ -6,10 +6,10 @@ public class GameManager : MonoBehaviour
     public GameObject ballPrefabs;
     public static IObjectPool<Ball> ballPool;
 
-    public GameObject[] stages;
-    public int[] stageInInteraction;
     //현재 스테이지 체크
-    //현재 스테이지의 상호작용 리스트 생성
+    public GameObject[] stages;
+    //현재 스테이지의 상호작용 숫자
+    public int[] stageInInteraction;
 
     private void Awake()
     {

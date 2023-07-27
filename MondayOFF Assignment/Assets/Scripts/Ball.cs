@@ -22,7 +22,7 @@ public class Ball : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         var col = collider.GetComponent<InteractionBlock>();
-        if (collider.CompareTag("InteractionBlock") && interractCount== col.count)
+        if (collider.CompareTag("InteractionBlock") && interractCount== col.count && col.multiple!=0)
         {
             interractCount++;
             for (int i = 1; i < col.multiple; i++)
@@ -38,6 +38,10 @@ public class Ball : MonoBehaviour
                     ball.interractCount = interractCount;
                 }
             }
+        }
+        else if(collider.CompareTag("InteractionBlock") && interractCount == col.count && col.multiple == 0)
+        {
+            DestroyBall();
         }
     }
 }
