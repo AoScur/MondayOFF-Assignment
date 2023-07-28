@@ -62,7 +62,7 @@ public class StartingBox : MonoBehaviour
 
     public void OnRotateStartingBox()
     {
-            StartCoroutine(StartingBoxRotateCoroutine());        
+        StartCoroutine(StartingBoxRotateCoroutine());        
     }
 
     private IEnumerator StartingBoxRotateCoroutine()
